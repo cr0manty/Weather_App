@@ -29,13 +29,17 @@ class DailyWeatherForecast {
   @JsonKey(name: 'wind_deg', defaultValue: 0)
   final int windDeg;
   @JsonKey(name: 'weather', defaultValue: 0)
-  final List<WeatherForecast> weather;
+  final List<WeatherForecast> weatherList;
   @JsonKey(name: 'clouds', defaultValue: 0)
   final int clouds;
   @JsonKey(name: 'pop', defaultValue: 0)
   final double pop;
   @JsonKey(name: 'uvi', defaultValue: 0)
   final double uvi;
+   @JsonKey(name: 'rain')
+  final double rain;
+    @JsonKey(name: 'snow')
+  final double snow;
 
   const DailyWeatherForecast({
     this.pop,
@@ -49,13 +53,20 @@ class DailyWeatherForecast {
     this.sunset,
     this.temp,
     this.uvi,
-    this.weather,
+    this.weatherList,
     this.windDeg,
     this.windSpeed,
+    this.rain,
+    this.snow,
   });
 
   factory DailyWeatherForecast.fromJson(Map<String, dynamic> data) =>
       _$DailyWeatherForecastFromJson(data);
 
   Map<String, dynamic> toJson() => _$DailyWeatherForecastToJson(this);
+
+  WeatherForecast get weather =>
+      weatherList != null && weatherList.isNotEmpty ? weatherList.first : null;
+
+  double get rainOrSnow => rain ?? snow ?? 0;
 }

@@ -27,6 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 29
+    ndkVersion "21.3.6528147"
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -60,4 +61,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.firebase:firebase-messaging:21.0.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -14,10 +14,13 @@ dependencies:
   http:
   shared_preferences:
   connectivity:
-#  firebase_messaging:
+  firebase_messaging:
   retrofit:
   json_annotation: 3.0.1
   cached_network_image:
+  location:
+  hive:
+  bloc_pattern:
 
 dev_dependencies:
   flutter_test:

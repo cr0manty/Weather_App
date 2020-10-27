@@ -32,6 +32,10 @@ class HourlyWeatherForecast {
   final double uvi;
   @JsonKey(name: 'visibility', defaultValue: 0)
   final int visibility;
+  @JsonKey(name: 'rain')
+  final Map<String, double> rain;
+  @JsonKey(name: 'snow')
+  final Map<String, double> snow;
 
   const HourlyWeatherForecast({
     this.pop,
@@ -47,10 +51,14 @@ class HourlyWeatherForecast {
     this.windSpeed,
     this.visibility,
     this.uvi,
+    this.snow,
+    this.rain,
   });
 
   factory HourlyWeatherForecast.fromJson(Map<String, dynamic> data) =>
       _$HourlyWeatherForecastFromJson(data);
 
   Map<String, dynamic> toJson() => _$HourlyWeatherForecastToJson(this);
+
+  // double get rainOrSnow => rain ?? snow ?? 0;
 }

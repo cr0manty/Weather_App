@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "551244161491",
+    "firebase_url": "https://weather-app-e3d02.firebaseio.com",
+    "project_id": "weather-app-e3d02",
+    "storage_bucket": "weather-app-e3d02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551244161491:android:f02358690b146559044f26",
+        "android_client_info": {
+          "package_name": "com.cr0manty.weather_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "551244161491-25dmhv8k5p8otvp54cofb655ihmafkau.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUNbCmkXuB7pbaRbv3VR6pJyh0JeZ4-0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "551244161491-25dmhv8k5p8otvp54cofb655ihmafkau.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

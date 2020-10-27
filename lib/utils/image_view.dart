@@ -4,10 +4,23 @@ import 'package:flutter/material.dart';
 class ImageView extends StatelessWidget {
   final String url;
   final BoxFit fit;
+  final bool userPlaceholder;
+  final double height;
+  final double width;
 
-  ImageView(this.url, {this.fit});
+  ImageView(
+    this.url, {
+    this.fit,
+    this.height = 60,
+    this.width = 60,
+    this.userPlaceholder = true,
+  });
 
-  Widget placeholder(BuildContext context) {
+  Widget placeholder(BuildContext context, {bool error = false}) {
+    if (!userPlaceholder && error) {
+      return SizedBox(height: height, width: width);
+    }
+
     return Container(
       color: Colors.grey.withOpacity(0.5),
       child: Center(
@@ -28,18 +41,20 @@ class ImageView extends StatelessWidget {
 
     return CachedNetworkImage(
       imageUrl: url,
-      imageBuilder: (context, imageProvider) => Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: imageProvider,
-            fit: fit ?? BoxFit.cover,
-          ),
-        ),
+      imageBuilder: (context, imageProvider) => Image(
+        image: imageProvider,
+        fit: BoxFit.fill,
+        height: height,
+        width: width,
       ),
-      errorWidget: (context, url, error) => placeholder(context),
+      errorWidget: (context, url, error) =>
+          placeholder(context, error: error != null),
       placeholder: (context, url) => Container(
         color: Colors.grey.withOpacity(0.4),
-        child: Center(
+        child: Container(
+          height: height,
+          width: width,
+          alignment: Alignment.center,
           child: CircularProgressIndicator(),
         ),
       ),

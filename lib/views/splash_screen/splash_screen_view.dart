@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:weather_app/utils/fade_route.dart';
+import 'package:weather_app/views/home/home_screen_view.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -18,9 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _onTimerEnd() {
     Navigator.of(context)
-        .pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => Container()), (
-        route) => false);
+        .pushAndRemoveUntil(FadeRoute(page: HomePage()), (route) => false);
   }
 
   @override

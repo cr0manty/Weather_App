@@ -23,7 +23,7 @@ DailyWeatherForecast _$DailyWeatherForecastFromJson(Map<String, dynamic> json) {
         ? null
         : DailyTemp.fromJson(json['temp'] as Map<String, dynamic>),
     uvi: (json['uvi'] as num)?.toDouble() ?? 0,
-    weather: (json['weather'] as List)
+    weatherList: (json['weather'] as List)
             ?.map((e) => e == null
                 ? null
                 : WeatherForecast.fromJson(e as Map<String, dynamic>))
@@ -47,7 +47,7 @@ Map<String, dynamic> _$DailyWeatherForecastToJson(
       'dew_point': instance.dewPoint,
       'wind_speed': instance.windSpeed,
       'wind_deg': instance.windDeg,
-      'weather': instance.weather,
+      'weather': instance.weatherList,
       'clouds': instance.clouds,
       'pop': instance.pop,
       'uvi': instance.uvi,
