@@ -18,7 +18,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0x22222222).withOpacity(0.9),
       appBar: AppBar(
         title: StreamBuilder<String>(
             stream: _model.onLocationChange,

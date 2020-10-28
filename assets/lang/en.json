@@ -14,5 +14,6 @@
   "wind_deg": "Wind direction",
   "clouds": "Clouds",
   "pop": "Probability of precipitation",
-  "uvi": "Midday UV index"
+  "uvi": "Midday UV index",
+  "temp": "Temperature"
 }

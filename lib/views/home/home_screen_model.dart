@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/network/api_client.dart';
+import 'package:weather_app/network/handlers/result.dart';
 import 'package:weather_app/network/handlers/safe_network_call.dart';
 import 'package:weather_app/network/responses/weather_response.dart';
 
@@ -85,10 +86,10 @@ class HomeScreenModel {
     final box = await Hive.openBox('weather');
     Coordinates coordinates = await currentCoordinates;
     _updateCity(coordinates);
-    // final result = await safeApiCall(ApiClient.instance
-    //     .getWeather(lat: coordinates.latitude, lon: coordinates.longitude));
-    final result = null;
-    if (result?.isSuccess != null) {
+    final result = await safeApiCall(ApiClient.instance
+        .getWeather(lat: coordinates.latitude, lon: coordinates.longitude));
+    // final result = Result(isSuccess: false);
+    if (result.isSuccess) {
       box.put('weather', result.data.toString());
       _onDataUpdated.add(result.data);
     } else {

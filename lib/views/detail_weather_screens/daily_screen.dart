@@ -17,8 +17,15 @@ class DetailDailyWeatherScreen extends StatelessWidget {
       body: ListView(
         children: [
           RowWeatherElement(
-            labelKey: 'date',
-            value: Text(forecast.dateString),
+            labelKey: 'temp',
+            value: DailyWeatherTimeLine(
+              label: forecast.temp.dayInt.toString(),
+              icon: Icons.wb_sunny,
+            ),
+            additionElement: DailyWeatherTimeLine(
+              label: forecast.temp.nightInt.toString(),
+              icon: Icons.nightlight_round,
+            ),
           ),
           RowWeatherElement(
             labelKey: 'feels_like',
