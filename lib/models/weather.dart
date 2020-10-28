@@ -25,5 +25,5 @@ class WeatherForecast {
 
   Map<String, dynamic> toJson() => _$WeatherForecastToJson(this);
 
-  String get iconUrl => 'http://openweathermap.org/img/wn/$icon@2x.png';
+  String get iconUrl => 'https://openweathermap.org/img/wn/$icon@2x.png';
 }

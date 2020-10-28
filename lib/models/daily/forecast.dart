@@ -1,5 +1,6 @@
+import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:weather_app/models/daily/feels_like.dart';
 import 'package:weather_app/models/daily/temp.dart';
 
 import '../weather.dart';
@@ -17,7 +18,7 @@ class DailyWeatherForecast {
   @JsonKey(name: 'temp')
   final DailyTemp temp;
   @JsonKey(name: 'feels_like')
-  final DailyFeelsLike feelsLike;
+  final DailyTemp feelsLike;
   @JsonKey(name: 'pressure', defaultValue: 0)
   final int pressure;
   @JsonKey(name: 'humidity', defaultValue: 0)
@@ -36,12 +37,12 @@ class DailyWeatherForecast {
   final double pop;
   @JsonKey(name: 'uvi', defaultValue: 0)
   final double uvi;
-   @JsonKey(name: 'rain')
+  @JsonKey(name: 'rain')
   final double rain;
-    @JsonKey(name: 'snow')
+  @JsonKey(name: 'snow')
   final double snow;
 
-  const DailyWeatherForecast({
+  DailyWeatherForecast({
     this.pop,
     this.clouds,
     this.dewPoint,
@@ -69,4 +70,14 @@ class DailyWeatherForecast {
       weatherList != null && weatherList.isNotEmpty ? weatherList.first : null;
 
   double get rainOrSnow => rain ?? snow ?? 0;
+
+  DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(dt * 1000);
+
+  String get dateString => DateFormat('dd MMM y').format(dateTime);
+
+  String get sunsetString => DateFormat('HH:mm:ss')
+      .format(DateTime.fromMillisecondsSinceEpoch(sunset * 1000));
+
+  String get sunriseString => DateFormat('HH:mm:ss')
+      .format(DateTime.fromMillisecondsSinceEpoch(sunrise * 1000));
 }

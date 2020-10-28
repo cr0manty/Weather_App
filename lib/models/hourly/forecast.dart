@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../weather.dart';
@@ -22,8 +23,8 @@ class HourlyWeatherForecast {
   final double windSpeed;
   @JsonKey(name: 'wind_deg', defaultValue: 0)
   final int windDeg;
-  @JsonKey(name: 'weather', defaultValue: 0)
-  final List<WeatherForecast> weather;
+  @JsonKey(name: 'weather')
+  final List<WeatherForecast> weatherList;
   @JsonKey(name: 'clouds', defaultValue: 0)
   final int clouds;
   @JsonKey(name: 'pop', defaultValue: 0)
@@ -46,7 +47,7 @@ class HourlyWeatherForecast {
     this.humidity,
     this.pressure,
     this.temp,
-    this.weather,
+    this.weatherList,
     this.windDeg,
     this.windSpeed,
     this.visibility,
@@ -60,5 +61,20 @@ class HourlyWeatherForecast {
 
   Map<String, dynamic> toJson() => _$HourlyWeatherForecastToJson(this);
 
-  // double get rainOrSnow => rain ?? snow ?? 0;
+  int get rainOrSnow {
+    return null;
+  }
+
+  DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(dt * 1000);
+
+  String get dateString => DateFormat('dd MMM y').format(dateTime);
+
+  String get timeString => DateFormat('HH:mm').format(dateTime);
+
+  int get intTemp => temp.round();
+
+  int get intFeelsLike => feelsLike.round();
+
+  WeatherForecast get weather =>
+      weatherList != null && weatherList.isNotEmpty ? weatherList.first : null;
 }

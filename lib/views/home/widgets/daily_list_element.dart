@@ -1,48 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/models/daily/forecast.dart';
 import 'package:weather_app/utils/image_view.dart';
+import 'package:weather_app/utils/localization.dart';
+import 'package:weather_app/views/detail_weather_screens/daily_screen.dart';
 
 import 'daily_weather_time_line.dart';
 
 class DailyListElement extends StatelessWidget {
+  final DailyWeatherForecast forecast;
+
+  DailyListElement(this.forecast);
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(8),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Center(
-              child: ImageView(
-                'http://openweathermap.org/img/wn/10d@2x.png',
-                userPlaceholder: false,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) =>
+                DetailDailyWeatherScreen(forecast),
+          ),
+        );
+      },
+      child: Card(
+        margin: EdgeInsets.all(8),
+        child: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Center(
+                child: ImageView(
+                  forecast.weather?.iconUrl,
+                ),
               ),
-            ),
-            Text(
-              '123/123/13',
-            ),
-            SizedBox(height: 10),
-            Column(
-              children: [
-                DailyWeatherTimeLine(
-                  label: '23',
-                  icon: Icons.wb_sunny,
-                ),
-                DailyWeatherTimeLine(
-                  label: '23',
-                  icon: Icons.nightlight_round,
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Column(
-              children: [
-                Text('fils like,'),
-                SizedBox(height: 3),
-                Text('23'),
-              ],
-            ),
-          ],
+              Text(
+                forecast.dateString,
+              ),
+              SizedBox(height: 10),
+              Column(
+                children: [
+                  DailyWeatherTimeLine(
+                    label: forecast.temp.dayInt.toString(),
+                    icon: Icons.wb_sunny,
+                  ),
+                  DailyWeatherTimeLine(
+                    label: forecast.temp.nightInt.toString(),
+                    icon: Icons.nightlight_round,
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Column(
+                children: [
+                  Text(
+                    AppLocalizations.of(context).translate('feels_like'),
+                  ),
+                  SizedBox(height: 3),
+                  DailyWeatherTimeLine(
+                    label: forecast.temp.dayInt.toString(),
+                    icon: Icons.wb_sunny,
+                  ),
+                  DailyWeatherTimeLine(
+                    label: forecast.temp.nightInt.toString(),
+                    icon: Icons.nightlight_round,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

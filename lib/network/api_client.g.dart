@@ -16,12 +16,14 @@ class _ApiClient implements ApiClient {
   String baseUrl;
 
   @override
-  Future<WeatherResponse> getWeather({lat, lon, appid}) async {
+  Future<WeatherResponse> getWeather(
+      {lat, lon, appid, units = 'metric'}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'lat': lat,
       r'lon': lon,
-      r'appid': appid
+      r'appid': appid,
+      r'units': units
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _data = <String, dynamic>{};

@@ -1,7 +1,18 @@
 {
-  "feels_like": "Feels Like:",
+  "feels_like": "Feels like:",
   "humidity": "Humidity",
   "rain/snow": "Rain/Snow",
   "daily": "7 Days",
-  "hourly": "Hourly"
+  "hourly": "Hourly",
+  "default_city": "Kiev",
+  "date": "Date",
+  "sunset": "Sunset",
+  "sunrice": "Sunrice",
+  "pressure": "Pressure",
+  "dew_point": "Atmospheric temperature",
+  "wind_speed": "Wind speed",
+  "wind_deg": "Wind direction",
+  "clouds": "Clouds",
+  "pop": "Probability of precipitation",
+  "uvi": "Midday UV index"
 }

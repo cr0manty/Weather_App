@@ -17,16 +17,21 @@ HourlyWeatherForecast _$HourlyWeatherForecastFromJson(
     humidity: json['humidity'] as int ?? 0,
     pressure: json['pressure'] as int ?? 0,
     temp: (json['temp'] as num)?.toDouble() ?? 0,
-    weather: (json['weather'] as List)
-            ?.map((e) => e == null
-                ? null
-                : WeatherForecast.fromJson(e as Map<String, dynamic>))
-            ?.toList() ??
-        0,
+    weatherList: (json['weather'] as List)
+        ?.map((e) => e == null
+            ? null
+            : WeatherForecast.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     windDeg: json['wind_deg'] as int ?? 0,
     windSpeed: (json['wind_speed'] as num)?.toDouble() ?? 0,
     visibility: json['visibility'] as int ?? 0,
     uvi: (json['uvi'] as num)?.toDouble(),
+    snow: (json['snow'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, (e as num)?.toDouble()),
+    ),
+    rain: (json['rain'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, (e as num)?.toDouble()),
+    ),
   );
 }
 
@@ -41,9 +46,11 @@ Map<String, dynamic> _$HourlyWeatherForecastToJson(
       'dew_point': instance.dewPoint,
       'wind_speed': instance.windSpeed,
       'wind_deg': instance.windDeg,
-      'weather': instance.weather,
+      'weather': instance.weatherList,
       'clouds': instance.clouds,
       'pop': instance.pop,
       'uvi': instance.uvi,
       'visibility': instance.visibility,
+      'rain': instance.rain,
+      'snow': instance.snow,
     };

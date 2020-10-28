@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/utils/hive_helper.dart';
 import 'package:weather_app/utils/localization.dart';
 import 'package:weather_app/views/splash_screen/splash_screen_view.dart';
 import 'package:weather_app/utils/notification_manager.dart';
@@ -17,6 +18,7 @@ class _WeatherAppState extends State<WeatherApp> {
   void initState() {
     super.initState();
     NotificationManager.instance.configure();
+    HiveHelper.init();
   }
 
   @override

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/network/responses/weather_response.dart';
 import 'package:weather_app/utils/localization.dart';
-import 'package:weather_app/views/home/widgets/addition_stat.dart';
+import 'package:weather_app/views/home/sections/current_section.dart';
+import 'package:weather_app/views/home/sections/hourly_screen.dart';
 
 import 'sections/daily_sceren.dart';
 import 'home_screen_model.dart';
@@ -13,19 +15,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final HomeScreenModel _model = HomeScreenModel();
 
-  void _onDropDownSelect(String choice) {}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0x22222222).withOpacity(0.9),
       appBar: AppBar(
-        title: Text(
-          'Kiev',
-        ),
+        title: StreamBuilder<String>(
+            stream: _model.onLocationChange,
+            initialData: AppLocalizations.of(context).translate('default_city'),
+            builder: (context, snapshot) {
+              return Text(snapshot.data);
+            }),
         actions: [
           PopupMenuButton<String>(
-            onSelected: _onDropDownSelect,
+            onSelected: _model.onTabChangeClick,
             itemBuilder: (context) {
               return _model.choices
                   .map(
@@ -33,6 +36,7 @@ class _HomePageState extends State<HomePage> {
                       child: Text(
                         AppLocalizations.of(context).translate(choice),
                       ),
+                      value: choice,
                     ),
                   )
                   .toList();
@@ -40,68 +44,29 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: 8),
-            alignment: Alignment.center,
-            child: Text(
-              'kiev',
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-          SizedBox(height: 20),
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              '23/23/23',
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-          SizedBox(height: 40),
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              '25',
-              style: TextStyle(fontSize: 80),
-            ),
-          ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: StreamBuilder<WeatherResponse>(
+        stream: _model.onDataUpdated,
+        builder: (context, snapshot) {
+          return ListView(
             children: [
-              Text(
-                AppLocalizations.of(context).translate('feels_like'),
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(width: 10),
-              Text(
-                '23',
-                style: TextStyle(fontSize: 20),
+              CurrentSection(snapshot.data),
+              SizedBox(height: 20),
+              StreamBuilder<String>(
+                stream: _model.onTabChange,
+                initialData: 'daily',
+                builder: (context, localSnapshot) {
+                  switch (localSnapshot.data) {
+                    case 'daily':
+                      return DailyWeatherScreen(snapshot.data?.daily ?? []);
+                    case 'hourly':
+                      return HourlyWeatherScreen(snapshot.data?.hourly ?? []);
+                  }
+                  return SizedBox.shrink();
+                },
               ),
             ],
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 20),
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AdditionWeatherStat(
-                  label: AppLocalizations.of(context).translate('humidity'),
-                  value: 'ads',
-                ),
-                SizedBox(width: 30),
-                AdditionWeatherStat(
-                  label: AppLocalizations.of(context).translate('rain/snow'),
-                  value: 'ads',
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 20),
-          DailyWeatherScreen()
-        ],
+          );
+        },
       ),
     );
   }

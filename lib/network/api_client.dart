@@ -34,5 +34,6 @@ abstract class ApiClient {
     @Query('lat') double lat,
     @Query('lon') double lon,
     @Query('appid') String appid,
+    @Query('units') String units = 'metric',
   });
 }

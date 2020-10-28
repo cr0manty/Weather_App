@@ -19,8 +19,10 @@ dependencies:
   json_annotation: 3.0.1
   cached_network_image:
   location:
+  geocoder:
   hive:
-  bloc_pattern:
+  hive_flutter:
+  intl:
 
 dev_dependencies:
   flutter_test:
@@ -29,6 +31,7 @@ dev_dependencies:
   retrofit_generator:
   json_serializable: 3.4.1
   build_runner: 1.10.2
+  hive_generator:
 
 flutter:
   uses-material-design: true

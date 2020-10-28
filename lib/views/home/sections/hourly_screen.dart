@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/models/hourly/forecast.dart';
 import 'package:weather_app/views/home/widgets/hourly_list_element.dart';
 
-class DailyWeatherScreen extends StatelessWidget {
+class HourlyWeatherScreen extends StatelessWidget {
+  final List<HourlyWeatherForecast> forecasts;
+
+  HourlyWeatherScreen(this.forecasts);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -14,8 +19,8 @@ class DailyWeatherScreen extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: List.generate(
-                10,
-                (index) => HourlyListElement(),
+                forecasts.length,
+                    (index) => HourlyListElement(forecasts[index]),
               ),
             ),
           ),

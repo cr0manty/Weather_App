@@ -1,35 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/models/hourly/forecast.dart';
 import 'package:weather_app/utils/image_view.dart';
+import 'package:weather_app/utils/localization.dart';
 
 class HourlyListElement extends StatelessWidget {
+  final HourlyWeatherForecast forecast;
+
+  HourlyListElement(this.forecast);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(8),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: Column(
           children: [
             Center(
               child: ImageView(
-                'http://openweathermap.org/img/wn/10d@2x.png',
-                userPlaceholder: false,
+                forecast.weather?.iconUrl,
               ),
             ),
             Text(
-              '123/123/13',
+              forecast.timeString,
             ),
             SizedBox(height: 10),
-            Text(
-              '23',
-            ),
+            Text(forecast.temp.round().toString()),
             SizedBox(height: 10),
             Column(
               children: [
-                Text('fils like,'),
+                Text(
+                  AppLocalizations.of(context).translate('feels_like'),
+                ),
                 SizedBox(height: 3),
-                Text('23'),
+                Text(forecast.feelsLike.round().toString())
               ],
             ),
           ],
