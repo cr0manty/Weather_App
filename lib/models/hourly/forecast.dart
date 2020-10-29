@@ -65,13 +65,16 @@ class HourlyWeatherForecast {
     return 0;
   }
 
-  DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(dt * 1000);
+  DateTime dateTime(int offset) =>
+      DateTime.fromMillisecondsSinceEpoch((dt - 25200) * 1000);
 
-  String get dateString => DateFormat('dd MMM y').format(dateTime);
+  String dateString(int offset) =>
+      DateFormat('dd MMM y').format(dateTime(offset));
 
-  String get timeString => DateFormat('HH:mm').format(dateTime);
+  String timeString(int offset) => DateFormat('HH:mm').format(dateTime(offset));
 
-  String get dateTimeString => DateFormat('dd MMM y HH:mm').format(dateTime);
+  String dateTimeString(int offset) =>
+      DateFormat('dd MMM y HH:mm').format(dateTime(offset));
 
   int get intTemp => temp.round();
 

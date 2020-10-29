@@ -6,8 +6,9 @@ import 'package:weather_app/views/detail_weather_screens/hourly_screen.dart';
 
 class HourlyListElement extends StatelessWidget {
   final HourlyWeatherForecast forecast;
+  final int timeOffset;
 
-  HourlyListElement(this.forecast);
+  HourlyListElement(this.forecast, this.timeOffset);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class HourlyListElement extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) =>
-                DetailHourlyWeatherScreen(forecast),
+                DetailHourlyWeatherScreen(forecast, timeOffset),
           ),
         );
       },
@@ -33,11 +34,11 @@ class HourlyListElement extends StatelessWidget {
                 ),
               ),
               Text(
-                forecast.dateString,
+                forecast.dateString(timeOffset),
               ),
               SizedBox(height: 10),
               Text(
-                forecast.timeString,
+                forecast.timeString(timeOffset),
               ),
               SizedBox(height: 10),
               Text('${forecast.intTemp}°C'),

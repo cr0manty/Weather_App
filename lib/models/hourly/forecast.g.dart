@@ -25,7 +25,7 @@ HourlyWeatherForecast _$HourlyWeatherForecastFromJson(
     windDeg: json['wind_deg'] as int ?? 0,
     windSpeed: (json['wind_speed'] as num)?.toDouble() ?? 0,
     visibility: json['visibility'] as int ?? 0,
-    uvi: (json['uvi'] as num)?.toDouble(),
+    uvi: (json['uvi'] as num)?.toDouble() ?? 0,
     snow: (json['snow'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, (e as num)?.toDouble()),
     ),

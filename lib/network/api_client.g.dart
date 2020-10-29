@@ -38,4 +38,27 @@ class _ApiClient implements ApiClient {
     final value = WeatherResponse.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<AddressByCoordinatesResponse> getAddressByCoordinates(
+      {lat, lon, format = 'json'}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'lat': lat,
+      r'lon': lon,
+      r'format': format
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('reverse',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AddressByCoordinatesResponse.fromJson(_result.data);
+    return value;
+  }
 }

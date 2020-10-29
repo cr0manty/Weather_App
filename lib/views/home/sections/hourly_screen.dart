@@ -4,8 +4,9 @@ import 'package:weather_app/views/home/widgets/hourly_list_element.dart';
 
 class HourlyWeatherScreen extends StatelessWidget {
   final List<HourlyWeatherForecast> forecasts;
+  final int timeOffset;
 
-  HourlyWeatherScreen(this.forecasts);
+  HourlyWeatherScreen(this.forecasts, this.timeOffset);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class HourlyWeatherScreen extends StatelessWidget {
             child: Row(
               children: List.generate(
                 forecasts.length,
-                    (index) => HourlyListElement(forecasts[index]),
+                    (index) => HourlyListElement(forecasts[index], timeOffset),
               ),
             ),
           ),

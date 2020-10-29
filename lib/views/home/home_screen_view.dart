@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                     case 'daily':
                       return DailyWeatherScreen(snapshot.data?.daily ?? []);
                     case 'hourly':
-                      return HourlyWeatherScreen(snapshot.data?.hourly ?? []);
+                      return HourlyWeatherScreen(snapshot.data?.hourly ?? [], snapshot.data.timezoneOffset);
                   }
                   return SizedBox.shrink();
                 },

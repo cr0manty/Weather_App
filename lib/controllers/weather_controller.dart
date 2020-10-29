@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:geocoder/geocoder.dart';
 import 'package:hive/hive.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weather_app/models/coordinates.dart';
 import 'package:weather_app/network/api_client.dart';
 import 'package:weather_app/network/handlers/safe_network_call.dart';
+import 'package:weather_app/network/responses/city_reponse.dart';
 import 'package:weather_app/network/responses/weather_response.dart';
 
 class WeatherBloc implements Bloc {
@@ -48,10 +49,10 @@ class WeatherBloc implements Bloc {
     Coordinates coordinates;
 
     _permissionGranted = await _location.hasPermission();
-    if (_permissionGranted == PermissionStatus.DENIED) {
+    if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await _location.requestPermission();
     }
-    if (_permissionGranted == PermissionStatus.GRANTED) {
+    if (_permissionGranted == PermissionStatus.granted) {
       _locationData = await _location.getLocation();
       coordinates =
           Coordinates(_locationData.latitude, _locationData.longitude);
@@ -83,7 +84,7 @@ class WeatherBloc implements Bloc {
   void _updateData() async {
     final box = await Hive.openBox('weather');
     Coordinates coordinates = await currentCoordinates;
-    final result = await safeApiCall(ApiClient.instance
+    final result = await safeApiCall(ApiClient.weatherApi
         .getWeather(lat: coordinates.latitude, lon: coordinates.longitude));
     if (result.isSuccess) {
       box.put('weather', result.data.toString());
@@ -104,12 +105,17 @@ class WeatherBloc implements Bloc {
   }
 
   Future<void> _updateCity(Coordinates coordinates) async {
-    final addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    if (addresses.length > 0) {
-      await _setCityName(addresses.first.locality);
+    final result = await safeApiCall(ApiClient.cityApi.getAddressByCoordinates(
+      lat: coordinates.latitude,
+      lon: coordinates.longitude,
+    ));
+
+    if (result.isSuccess) {
+      _city = result.data.address.city;
+      await _setCityName(_city);
+    } else {
+      _city = await _cityName;
     }
-    _city = await _cityName;
     _onLocationChange.add(_city);
   }
 

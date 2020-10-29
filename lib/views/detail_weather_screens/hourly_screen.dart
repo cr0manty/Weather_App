@@ -4,14 +4,15 @@ import 'package:weather_app/views/detail_weather_screens/widgets/row_element.dar
 
 class DetailHourlyWeatherScreen extends StatelessWidget {
   final HourlyWeatherForecast forecast;
+  final int timeOffset;
 
-  DetailHourlyWeatherScreen(this.forecast);
+  DetailHourlyWeatherScreen(this.forecast, this.timeOffset);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(forecast.dateTimeString),
+        title: Text(forecast.dateTimeString(timeOffset)),
       ),
       body: ListView(
         shrinkWrap: true,

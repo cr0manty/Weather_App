@@ -23,9 +23,6 @@ dependencies:
   hive_flutter:
   intl:
   bloc_pattern:
-  geocoder:
-    git:
-      url: https://github.com/otopba/flutter_geocoder.git
 
 dev_dependencies:
   flutter_test:

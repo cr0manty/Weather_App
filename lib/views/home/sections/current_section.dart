@@ -15,7 +15,7 @@ class CurrentSection extends StatelessWidget {
         margin: EdgeInsets.only(top: 8),
         alignment: Alignment.center,
         child: Text(
-          '${weather?.current?.dateString ?? '--'}',
+          '${weather?.current?.dateString(weather.timezoneOffset) ?? '--'}',
           style: TextStyle(fontSize: 20),
         ),
       ),
