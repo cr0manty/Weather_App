@@ -49,10 +49,10 @@ class WeatherBloc implements Bloc {
     Coordinates coordinates;
 
     _permissionGranted = await _location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
+    if (_permissionGranted == PermissionStatus.DENIED) {
       _permissionGranted = await _location.requestPermission();
     }
-    if (_permissionGranted == PermissionStatus.granted) {
+    if (_permissionGranted == PermissionStatus.GRANTED) {
       _locationData = await _location.getLocation();
       coordinates =
           Coordinates(_locationData.latitude, _locationData.longitude);
