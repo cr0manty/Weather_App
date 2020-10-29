@@ -23,6 +23,7 @@ dependencies:
   hive:
   hive_flutter:
   intl:
+  bloc_pattern:
 
 dev_dependencies:
   flutter_test:

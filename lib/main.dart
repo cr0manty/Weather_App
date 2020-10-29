@@ -1,8 +1,12 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:weather_app/utils/hive_helper.dart';
 import 'package:weather_app/utils/localization.dart';
 import 'package:weather_app/views/splash_screen/splash_screen_view.dart';
 import 'package:weather_app/utils/notification_manager.dart';
+
+import 'controllers/weather_controller.dart';
 
 void main() {
   runApp(WeatherApp());
@@ -19,6 +23,7 @@ class _WeatherAppState extends State<WeatherApp> {
     super.initState();
     NotificationManager.instance.configure();
     HiveHelper.init();
+    Location().requestPermission();
   }
 
   @override
@@ -29,31 +34,36 @@ class _WeatherAppState extends State<WeatherApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        AppLocalizations.delegate,
+    return BlocProvider(
+      blocs: [
+        Bloc((i) => WeatherBloc()),
       ],
-      localeListResolutionCallback: (locales, supportedLocales) {
-        Locale currentLocale;
-        for (Locale locale in locales) {
-          for (Locale supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale.languageCode) {
-              currentLocale = supportedLocale;
-              break;
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+        ],
+        localeListResolutionCallback: (locales, supportedLocales) {
+          Locale currentLocale;
+          for (Locale locale in locales) {
+            for (Locale supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale.languageCode) {
+                currentLocale = supportedLocale;
+                break;
+              }
             }
           }
-        }
-        currentLocale ??= supportedLocales.first;
-        print('Device language code: ${currentLocale.languageCode}');
-        print('Device country code: ${currentLocale.countryCode}');
-        return currentLocale;
-      },
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.dark,
+          currentLocale ??= supportedLocales.first;
+          print('Device language code: ${currentLocale.languageCode}');
+          print('Device country code: ${currentLocale.countryCode}');
+          return currentLocale;
+        },
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          brightness: Brightness.dark,
+        ),
+        home: SplashScreen(),
       ),
-      home: SplashScreen(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:hive/hive.dart';
 import 'package:location/location.dart';
@@ -10,7 +11,7 @@ import 'package:weather_app/network/handlers/result.dart';
 import 'package:weather_app/network/handlers/safe_network_call.dart';
 import 'package:weather_app/network/responses/weather_response.dart';
 
-class HomeScreenModel {
+class WeatherBloc implements Bloc {
   final StreamController<WeatherResponse> _onDataUpdated =
       StreamController<WeatherResponse>.broadcast();
   final StreamController<String> _onLocationChange =
@@ -20,6 +21,7 @@ class HomeScreenModel {
 
   Location _location = Location();
   LocationData _locationData;
+  WeatherResponse _weatherResponse;
   final List<String> choices = [
     'daily',
     'hourly',
@@ -33,8 +35,17 @@ class HomeScreenModel {
 
   Stream<String> get onTabChange => _onTabChange.stream;
 
-  HomeScreenModel() {
+  WeatherResponse get weatherResponse => _weatherResponse;
+
+  void init() {
     initLocation();
+    // _location.onLocationChanged().listen((location) async {
+    //   _locationData = location;
+    //   Coordinates coordinates =
+    //       Coordinates(_locationData.latitude, _locationData.longitude);
+    //   await _setCurrentCoordinates(coordinates);
+    //   _updateData();
+    // });
   }
 
   void initLocation() async {
@@ -42,18 +53,19 @@ class HomeScreenModel {
     PermissionStatus _permissionGranted;
     Coordinates coordinates;
 
-    _serviceEnabled = await _location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await _location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
+    // _serviceEnabled = await _location.serviceEnabled();
+    // if (!_serviceEnabled) {
+    //   _serviceEnabled = await _location.requestService();
+    //   if (!_serviceEnabled) {
+    //     return;
+    //   }
+    // }
 
     _permissionGranted = await _location.hasPermission();
     if (_permissionGranted == PermissionStatus.DENIED) {
       _permissionGranted = await _location.requestPermission();
-    } else if (_permissionGranted == PermissionStatus.GRANTED) {
+    }
+    if (_permissionGranted == PermissionStatus.GRANTED) {
       _locationData = await _location.getLocation();
       coordinates =
           Coordinates(_locationData.latitude, _locationData.longitude);
@@ -85,18 +97,19 @@ class HomeScreenModel {
   void _updateData() async {
     final box = await Hive.openBox('weather');
     Coordinates coordinates = await currentCoordinates;
-    _updateCity(coordinates);
     final result = await safeApiCall(ApiClient.instance
         .getWeather(lat: coordinates.latitude, lon: coordinates.longitude));
     // final result = Result(isSuccess: false);
     if (result.isSuccess) {
+      _updateCity(Coordinates(result.data.lat, result.data.lon));
       box.put('weather', result.data.toString());
+      _weatherResponse = result.data;
       _onDataUpdated.add(result.data);
     } else {
       final weather = box.get('weather');
       if (weather != null) {
-        WeatherResponse weatherResponse = WeatherResponse.fromJson(json.decode(weather));
-        _onDataUpdated.add(weatherResponse);
+        _weatherResponse = WeatherResponse.fromJson(json.decode(weather));
+        _onDataUpdated.add(_weatherResponse);
       }
     }
   }
@@ -118,4 +131,10 @@ class HomeScreenModel {
     _onLocationChange?.close();
     _onTabChange?.close();
   }
+
+  @override
+  Function(Inject i) get inject => throw UnimplementedError();
+
+  @override
+  bool get singleton => true;
 }

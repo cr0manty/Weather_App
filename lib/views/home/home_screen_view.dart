@@ -1,11 +1,12 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:weather_app/controllers/weather_controller.dart';
 import 'package:weather_app/network/responses/weather_response.dart';
 import 'package:weather_app/utils/localization.dart';
 import 'package:weather_app/views/home/sections/current_section.dart';
 import 'package:weather_app/views/home/sections/hourly_screen.dart';
 
 import 'sections/daily_sceren.dart';
-import 'home_screen_model.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,23 +14,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final HomeScreenModel _model = HomeScreenModel();
-
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.getBloc<WeatherBloc>();
+
     return Scaffold(
       appBar: AppBar(
         title: StreamBuilder<String>(
-            stream: _model.onLocationChange,
+            stream: bloc.onLocationChange,
             initialData: AppLocalizations.of(context).translate('default_city'),
             builder: (context, snapshot) {
               return Text(snapshot.data);
             }),
         actions: [
           PopupMenuButton<String>(
-            onSelected: _model.onTabChangeClick,
+            onSelected: bloc.onTabChangeClick,
             itemBuilder: (context) {
-              return _model.choices
+              return bloc.choices
                   .map(
                     (String choice) => PopupMenuItem<String>(
                       child: Text(
@@ -44,7 +45,8 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: StreamBuilder<WeatherResponse>(
-        stream: _model.onDataUpdated,
+        stream: bloc.onDataUpdated,
+        initialData: bloc.weatherResponse,
         builder: (context, snapshot) {
           return ListView(
             shrinkWrap: true,
@@ -52,7 +54,7 @@ class _HomePageState extends State<HomePage> {
               CurrentSection(snapshot.data),
               SizedBox(height: 20),
               StreamBuilder<String>(
-                stream: _model.onTabChange,
+                stream: bloc.onTabChange,
                 initialData: 'daily',
                 builder: (context, localSnapshot) {
                   switch (localSnapshot.data) {

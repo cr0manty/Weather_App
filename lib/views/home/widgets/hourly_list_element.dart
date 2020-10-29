@@ -32,6 +32,10 @@ class HourlyListElement extends StatelessWidget {
                 ),
               ),
               Text(
+                forecast.dateString,
+              ),
+              SizedBox(height: 10),
+              Text(
                 forecast.timeString,
               ),
               SizedBox(height: 10),

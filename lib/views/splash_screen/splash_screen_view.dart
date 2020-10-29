@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:weather_app/controllers/weather_controller.dart';
 import 'package:weather_app/utils/fade_route.dart';
 import 'package:weather_app/views/home/home_screen_view.dart';
 
@@ -21,6 +23,13 @@ class _SplashScreenState extends State<SplashScreen> {
   void _onTimerEnd() {
     Navigator.of(context)
         .pushAndRemoveUntil(FadeRoute(page: HomePage()), (route) => false);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final bloc = BlocProvider.getBloc<WeatherBloc>();
+    bloc.init();
   }
 
   @override
