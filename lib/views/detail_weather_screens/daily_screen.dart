@@ -15,26 +15,27 @@ class DetailDailyWeatherScreen extends StatelessWidget {
         title: Text(forecast.dateString),
       ),
       body: ListView(
+        shrinkWrap: true,
         children: [
           RowWeatherElement(
             labelKey: 'temp',
             value: DailyWeatherTimeLine(
-              label: forecast.temp.dayInt.toString(),
+              label: '${forecast.temp.dayInt}°C',
               icon: Icons.wb_sunny,
             ),
             additionElement: DailyWeatherTimeLine(
-              label: forecast.temp.nightInt.toString(),
+              label: '${forecast.temp.nightInt}°C',
               icon: Icons.nightlight_round,
             ),
           ),
           RowWeatherElement(
             labelKey: 'feels_like',
             value: DailyWeatherTimeLine(
-              label: forecast.feelsLike.dayInt.toString(),
+              label: '${forecast.feelsLike.dayInt}°C',
               icon: Icons.wb_sunny,
             ),
             additionElement: DailyWeatherTimeLine(
-              label: forecast.feelsLike.nightInt.toString(),
+              label: '${forecast.feelsLike.nightInt}°C',
               icon: Icons.nightlight_round,
             ),
           ),
@@ -52,11 +53,11 @@ class DetailDailyWeatherScreen extends StatelessWidget {
           ),
           RowWeatherElement(
             labelKey: 'humidity',
-            value: Text(forecast.humidity.toString()),
+            value: Text('${forecast.humidity}%'),
           ),
           RowWeatherElement(
             labelKey: 'dew_point',
-            value: Text('${forecast.dewPoint}°C'),
+            value: Text('${forecast.dewPoint.round()}°C'),
           ),
           RowWeatherElement(
             labelKey: 'wind_speed',
@@ -72,7 +73,7 @@ class DetailDailyWeatherScreen extends StatelessWidget {
           ),
           RowWeatherElement(
             labelKey: 'pop',
-            value: Text('${forecast.pop}%'),
+            value: Text('${forecast.pop.round()}%'),
           ),
           RowWeatherElement(
             labelKey: 'uvi',

@@ -29,7 +29,7 @@ class HourlyWeatherForecast {
   final int clouds;
   @JsonKey(name: 'pop', defaultValue: 0)
   final double pop;
-  @JsonKey(name: 'uvi')
+  @JsonKey(name: 'uvi', defaultValue: 0)
   final double uvi;
   @JsonKey(name: 'visibility', defaultValue: 0)
   final int visibility;
@@ -62,7 +62,7 @@ class HourlyWeatherForecast {
   Map<String, dynamic> toJson() => _$HourlyWeatherForecastToJson(this);
 
   int get rainOrSnow {
-    return null;
+    return 0;
   }
 
   DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(dt * 1000);
@@ -70,6 +70,8 @@ class HourlyWeatherForecast {
   String get dateString => DateFormat('dd MMM y').format(dateTime);
 
   String get timeString => DateFormat('HH:mm').format(dateTime);
+
+  String get dateTimeString => DateFormat('dd MMM y HH:mm').format(dateTime);
 
   int get intTemp => temp.round();
 

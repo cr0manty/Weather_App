@@ -69,7 +69,7 @@ class DailyWeatherForecast {
   WeatherForecast get weather =>
       weatherList != null && weatherList.isNotEmpty ? weatherList.first : null;
 
-  double get rainOrSnow => rain ?? snow ?? 0;
+  int get rainOrSnow => rain?.round() ?? snow?.round() ?? 0;
 
   DateTime get dateTime => DateTime.fromMillisecondsSinceEpoch(dt * 1000);
 

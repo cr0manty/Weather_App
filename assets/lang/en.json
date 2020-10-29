@@ -15,5 +15,6 @@
   "clouds": "Clouds",
   "pop": "Probability of precipitation",
   "uvi": "Midday UV index",
-  "temp": "Temperature"
+  "temp": "Temperature",
+  "visibility": "Visibility"
 }

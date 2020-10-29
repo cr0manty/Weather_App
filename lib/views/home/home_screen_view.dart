@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
         stream: _model.onDataUpdated,
         builder: (context, snapshot) {
           return ListView(
+            shrinkWrap: true,
             children: [
               CurrentSection(snapshot.data),
               SizedBox(height: 20),
