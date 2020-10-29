@@ -16,7 +16,8 @@ class ImageView extends StatelessWidget {
 
   Widget placeholder(BuildContext context, {bool error = false}) {
     return Container(
-      color: Colors.grey.withOpacity(0.5),
+      height: height,
+      width: width,
       child: Center(
         child: Icon(
           Icons.cloud_off,

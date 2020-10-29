@@ -21,6 +21,7 @@ class HourlyListElement extends StatelessWidget {
         );
       },
       child: Card(
+        color: Color(0xe8e8e8).withOpacity(0.9),
         margin: EdgeInsets.all(8),
         child: Padding(
           padding: EdgeInsets.all(8.0),
@@ -39,7 +40,7 @@ class HourlyListElement extends StatelessWidget {
                 forecast.timeString,
               ),
               SizedBox(height: 10),
-              Text(forecast.temp.round().toString()),
+              Text('${forecast.intTemp}°C'),
               SizedBox(height: 10),
               Column(
                 children: [
@@ -47,7 +48,7 @@ class HourlyListElement extends StatelessWidget {
                     AppLocalizations.of(context).translate('feels_like'),
                   ),
                   SizedBox(height: 3),
-                  Text(forecast.feelsLike.round().toString())
+                  Text('${forecast.intFeelsLike}°C'),
                 ],
               ),
             ],

@@ -23,6 +23,7 @@ class DailyListElement extends StatelessWidget {
         );
       },
       child: Card(
+        color: Color(0xe8e8e8).withOpacity(0.9),
         margin: EdgeInsets.all(8),
         child: Padding(
           padding: EdgeInsets.all(8.0),

@@ -22,10 +22,22 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: StreamBuilder<String>(
             stream: bloc.onLocationChange,
-            initialData: AppLocalizations.of(context).translate('default_city'),
-            builder: (context, snapshot) {
-              return Text(snapshot.data);
+            initialData: bloc.city ??
+                AppLocalizations.of(context).translate('default_city'),
+            builder: (context, localeSnapshot) {
+              return Center(
+                child: Text(
+                  localeSnapshot.data ?? '',
+                ),
+              );
             }),
+        leading: FlatButton(
+          child: Icon(
+            Icons.refresh,
+            color: Colors.white,
+          ),
+          onPressed: bloc.init,
+        ),
         actions: [
           PopupMenuButton<String>(
             onSelected: bloc.onTabChangeClick,

@@ -16,6 +16,7 @@ class DailyWeatherTimeLine extends StatelessWidget {
         Icon(
           icon,
           size: 15,
+          color: Color(0x495464).withOpacity(0.9),
         ),
         SizedBox(width: 10),
         Text(

@@ -7,7 +7,6 @@ import 'package:hive/hive.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/network/api_client.dart';
-import 'package:weather_app/network/handlers/result.dart';
 import 'package:weather_app/network/handlers/safe_network_call.dart';
 import 'package:weather_app/network/responses/weather_response.dart';
 
@@ -22,6 +21,7 @@ class WeatherBloc implements Bloc {
   Location _location = Location();
   LocationData _locationData;
   WeatherResponse _weatherResponse;
+  String _city;
   final List<String> choices = [
     'daily',
     'hourly',
@@ -37,29 +37,15 @@ class WeatherBloc implements Bloc {
 
   WeatherResponse get weatherResponse => _weatherResponse;
 
+  String get city => _city;
+
   void init() {
     initLocation();
-    // _location.onLocationChanged().listen((location) async {
-    //   _locationData = location;
-    //   Coordinates coordinates =
-    //       Coordinates(_locationData.latitude, _locationData.longitude);
-    //   await _setCurrentCoordinates(coordinates);
-    //   _updateData();
-    // });
   }
 
   void initLocation() async {
-    bool _serviceEnabled;
     PermissionStatus _permissionGranted;
     Coordinates coordinates;
-
-    // _serviceEnabled = await _location.serviceEnabled();
-    // if (!_serviceEnabled) {
-    //   _serviceEnabled = await _location.requestService();
-    //   if (!_serviceEnabled) {
-    //     return;
-    //   }
-    // }
 
     _permissionGranted = await _location.hasPermission();
     if (_permissionGranted == PermissionStatus.DENIED) {
@@ -87,7 +73,7 @@ class WeatherBloc implements Bloc {
     return Coordinates(coordinatesList[0], coordinatesList[1]);
   }
 
-  Future _setCurrentCoordinates(Coordinates coordinates) async {
+  Future<void> _setCurrentCoordinates(Coordinates coordinates) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String coordinatesString =
         '${coordinates.latitude},${coordinates.longitude}';
@@ -99,9 +85,7 @@ class WeatherBloc implements Bloc {
     Coordinates coordinates = await currentCoordinates;
     final result = await safeApiCall(ApiClient.instance
         .getWeather(lat: coordinates.latitude, lon: coordinates.longitude));
-    // final result = Result(isSuccess: false);
     if (result.isSuccess) {
-      _updateCity(Coordinates(result.data.lat, result.data.lon));
       box.put('weather', result.data.toString());
       _weatherResponse = result.data;
       _onDataUpdated.add(result.data);
@@ -112,18 +96,31 @@ class WeatherBloc implements Bloc {
         _onDataUpdated.add(_weatherResponse);
       }
     }
+    await _updateCity(Coordinates(_weatherResponse.lat, _weatherResponse.lon));
   }
 
   void onTabChangeClick(String tab) {
     _onTabChange.add(tab);
   }
 
-  void _updateCity(Coordinates coordinates) async {
+  Future<void> _updateCity(Coordinates coordinates) async {
     final addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     if (addresses.length > 0) {
-      _onLocationChange.add(addresses.first.locality);
+      await _setCityName(addresses.first.locality);
     }
+    _city = await _cityName;
+    _onLocationChange.add(_city);
+  }
+
+  Future<String> get _cityName async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getString('CurrentCity');
+  }
+
+  Future<void> _setCityName(String city) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('CurrentCity', city);
   }
 
   void dispose() {
@@ -133,7 +130,7 @@ class WeatherBloc implements Bloc {
   }
 
   @override
-  Function(Inject i) get inject => throw UnimplementedError();
+  Function(Inject i) get inject => null;
 
   @override
   bool get singleton => true;

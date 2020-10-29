@@ -59,8 +59,9 @@ class _WeatherAppState extends State<WeatherApp> {
           return currentLocale;
         },
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-          brightness: Brightness.dark,
+          primaryColor: Colors.blueGrey,
+          brightness: Brightness.light,
+          scaffoldBackgroundColor: Color(0xf4f4f2).withOpacity(0.9)
         ),
         home: SplashScreen(),
       ),
